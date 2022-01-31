@@ -1,3 +1,4 @@
+
 package unileon.es;
 
 import java.awt.BorderLayout;
@@ -36,6 +37,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@SuppressWarnings("serial")
 public class Pantalla extends JFrame implements ActionListener {
 
 	private BorderLayout border;
@@ -409,7 +411,7 @@ public class Pantalla extends JFrame implements ActionListener {
 				if(matriz[destino[0]][destino[1]].equals("#") || matriz[destino[0]][destino[1]].equals("!")) {
 					matrizAux = juguete.mueve(destino[0],destino[1]);
 				}else {
-					matrizAux = juguete.arrastrar(matriz,destino[0],destino[1]);
+					matrizAux = juguete.arrastrar(destino[0],destino[1]);
 				}
 
 			}else {
@@ -467,11 +469,17 @@ public class Pantalla extends JFrame implements ActionListener {
 	 * 
 	 */
 
-	public boolean realizarMovimiento(int fila, int columna) {
+	public boolean realizarMovimiento(int fila, int columna,boolean empujar) {
 
 		JuegoManual movimiento = new JuegoManual(matriz);
 
-		String[][] prueba = movimiento.mueve(fila, columna);
+		String[][] prueba = null;
+
+		if(empujar == true) {
+			prueba = movimiento.mueve(fila,columna);
+		}else {
+			prueba = movimiento.arrastrar( fila,columna);
+		}
 
 		// Comprobamos si se ha realizado el movimiento o no
 		if (prueba == null) {
@@ -484,7 +492,7 @@ public class Pantalla extends JFrame implements ActionListener {
 			camino += movimiento.getMovimiento();
 
 			if (movimiento.esSolucion(matriz)) {
-				JOptionPane.showMessageDialog(null, "Se ha resulto el ta blero, enhorabuena"+ getResult());
+				JOptionPane.showMessageDialog(null, "Se ha resulto el tablero, enhorabuena"+ getResult());
 			}
 			// Se ha realizado el movimiento
 			return true;
@@ -509,6 +517,7 @@ public class Pantalla extends JFrame implements ActionListener {
 
 	// Metodo que me carga los paneles como hilos que lleva la propia clase
 	private void cargaPanelJuego() {
+
 		estoyJugando = true;
 		// Cargamos los datos
 		this.Filas = matriz.length;
@@ -531,6 +540,17 @@ public class Pantalla extends JFrame implements ActionListener {
 
 		this.getContentPane().add(matrizGrafica, BorderLayout.CENTER);
 		this.setVisible(true);
+
+		//Coger el foco 
+		this.requestFocus();
+
+		for(KeyListener tecla : this.getKeyListeners()) {
+			this.removeKeyListener(tecla);
+			
+			
+		}
+		
+		this.addKeyListener(AdolfitoListen.getKeyListener());
 	}
 
 	private void inicializarMatriz() {
@@ -873,45 +893,130 @@ public class Pantalla extends JFrame implements ActionListener {
 	//CLASE DE LAS TECLAS (KEYLISTENER)
 
 
-	class KeyListen implements KeyListener{
+	class AdolfitoListen implements KeyListener{
 
-		@Override
-		public void keyTyped(KeyEvent e) {
-			// TODO Auto-generated method stub
-			
+		//Variables GLobales
+		private  static AdolfitoListen KeyListener;
+
+		//Creamos un constructor privado
+		private  AdolfitoListen() {
+
 		}
+
+		public static KeyListener getKeyListener() {
+
+			if(KeyListener == null) {
+				KeyListener = new AdolfitoListen();
+			}
+
+			return KeyListener;
+		}
+
+
 
 		@Override
 		public void keyPressed(KeyEvent e) {
-			// TODO Auto-generated method stub
-			
+
+			/*
+			 * ESTA PULSADO EL SHIFT
+			 */
+
+			if(e.isShiftDown()) {
+
+				if(e.getKeyCode()==KeyEvent.VK_RIGHT) {
+					arrastrar("d");
+				}
+
+				if(e.getKeyCode()==KeyEvent.VK_DOWN) {
+					arrastrar("b");
+				}
+
+				if(e.getKeyCode()==KeyEvent.VK_LEFT) {
+					arrastrar("i");
+				}
+
+				if(e.getKeyCode()==KeyEvent.VK_UP) {
+					arrastrar("a");
+				}
+			}else {
+
+				if(e.getKeyCode()==KeyEvent.VK_RIGHT) {
+					mueve("d");
+				}
+
+				if(e.getKeyCode()==KeyEvent.VK_DOWN) {
+					mueve("b");
+				}
+
+				if(e.getKeyCode()==KeyEvent.VK_LEFT) {
+					mueve("i");
+				}
+
+				if(e.getKeyCode()==KeyEvent.VK_UP) {
+					mueve("a");
+				}
+			}
+
 		}
+
+
+
+		private void mueve(String letraMov) {
+
+			JuegoManual juguete = new JuegoManual(matriz);
+			int[] vectorcito = juguete.buscaRobot(matriz);
+
+			if(letraMov.equals("a")) {
+				realizarMovimiento(vectorcito[0]-1,vectorcito[1],true);
+			}
+
+			if(letraMov.equals("b")) {
+				realizarMovimiento(vectorcito[0]+1,vectorcito[1],true);
+			}
+
+			if(letraMov.equals("d")) {
+				realizarMovimiento(vectorcito[0],vectorcito[1]+1,true);
+			}
+
+			if(letraMov.equals("i")) {
+				realizarMovimiento(vectorcito[0],vectorcito[1]-1,true);
+			}
+
+		}
+
+		private void arrastrar(String letraMov) {
+
+			JuegoManual juguete = new JuegoManual(matriz);
+			int[] vectorcito = juguete.buscaRobot(matriz);
+
+			if(letraMov.equals("a")) {
+				realizarMovimiento(vectorcito[0]-1,vectorcito[1],false);
+			}
+
+			if(letraMov.equals("b")) {
+				realizarMovimiento(vectorcito[0]+1,vectorcito[1],false);
+			}
+
+			if(letraMov.equals("d")) {
+				realizarMovimiento(vectorcito[0],vectorcito[1]+1,false);
+			}
+
+			if(letraMov.equals("i")) {
+				realizarMovimiento(vectorcito[0],vectorcito[1]-1,false);
+			}
+
+		}
+
+		//No los voy a implementar pero los dejo para que no me salte el error
+		@Override
+		public void keyTyped(KeyEvent e) {
+
+		}
+
 
 		@Override
 		public void keyReleased(KeyEvent e) {
-			// TODO Auto-generated method stub
-			
+
 		}
-
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
