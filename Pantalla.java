@@ -534,6 +534,7 @@ public class Pantalla extends JFrame implements ActionListener {
 
 				String mueble = matriz[i][j];
 				BotonJuega jugando = new BotonJuega(mueble, i, j, this);
+				jugando.addKeyListener(new AdolfitoListen());
 				matrizGrafica.add(jugando);
 			}
 		}
@@ -546,11 +547,11 @@ public class Pantalla extends JFrame implements ActionListener {
 
 		for(KeyListener tecla : this.getKeyListeners()) {
 			this.removeKeyListener(tecla);
-			
-			
+
+
 		}
-		
-		this.addKeyListener(AdolfitoListen.getKeyListener());
+
+		this.addKeyListener(new AdolfitoListen());
 	}
 
 	private void inicializarMatriz() {
@@ -890,26 +891,62 @@ public class Pantalla extends JFrame implements ActionListener {
 
 	}
 
+
+	private void mueve(String letraMov) {
+
+		JuegoManual juguete = new JuegoManual(matriz);
+		int[] vectorcito = juguete.buscaRobot(matriz);
+
+		if(letraMov.equals("a")) {
+			realizarMovimiento(vectorcito[0]-1,vectorcito[1],true);
+		}
+
+		if(letraMov.equals("b")) {
+			realizarMovimiento(vectorcito[0]+1,vectorcito[1],true);
+		}
+
+		if(letraMov.equals("d")) {
+			realizarMovimiento(vectorcito[0],vectorcito[1]+1,true);
+		}
+
+		if(letraMov.equals("i")) {
+			realizarMovimiento(vectorcito[0],vectorcito[1]-1,true);
+		}
+
+	}
+
+	private void arrastrar(String letraMov) {
+
+		JuegoManual juguete = new JuegoManual(matriz);
+		int[] vectorcito = juguete.buscaRobot(matriz);
+
+		if(letraMov.equals("a")) {
+			realizarMovimiento(vectorcito[0]-1,vectorcito[1],false);
+		}
+
+		if(letraMov.equals("b")) {
+			realizarMovimiento(vectorcito[0]+1,vectorcito[1],false);
+		}
+
+		if(letraMov.equals("d")) {
+			realizarMovimiento(vectorcito[0],vectorcito[1]+1,false);
+		}
+
+		if(letraMov.equals("i")) {
+			realizarMovimiento(vectorcito[0],vectorcito[1]-1,false);
+		}
+
+	}
+
 	//CLASE DE LAS TECLAS (KEYLISTENER)
 
 
-	class AdolfitoListen implements KeyListener{
+	public class AdolfitoListen implements KeyListener{
 
-		//Variables GLobales
-		private  static AdolfitoListen KeyListener;
 
 		//Creamos un constructor privado
-		private  AdolfitoListen() {
+		public  AdolfitoListen() {
 
-		}
-
-		public static KeyListener getKeyListener() {
-
-			if(KeyListener == null) {
-				KeyListener = new AdolfitoListen();
-			}
-
-			return KeyListener;
 		}
 
 
@@ -961,51 +998,6 @@ public class Pantalla extends JFrame implements ActionListener {
 
 
 
-		private void mueve(String letraMov) {
-
-			JuegoManual juguete = new JuegoManual(matriz);
-			int[] vectorcito = juguete.buscaRobot(matriz);
-
-			if(letraMov.equals("a")) {
-				realizarMovimiento(vectorcito[0]-1,vectorcito[1],true);
-			}
-
-			if(letraMov.equals("b")) {
-				realizarMovimiento(vectorcito[0]+1,vectorcito[1],true);
-			}
-
-			if(letraMov.equals("d")) {
-				realizarMovimiento(vectorcito[0],vectorcito[1]+1,true);
-			}
-
-			if(letraMov.equals("i")) {
-				realizarMovimiento(vectorcito[0],vectorcito[1]-1,true);
-			}
-
-		}
-
-		private void arrastrar(String letraMov) {
-
-			JuegoManual juguete = new JuegoManual(matriz);
-			int[] vectorcito = juguete.buscaRobot(matriz);
-
-			if(letraMov.equals("a")) {
-				realizarMovimiento(vectorcito[0]-1,vectorcito[1],false);
-			}
-
-			if(letraMov.equals("b")) {
-				realizarMovimiento(vectorcito[0]+1,vectorcito[1],false);
-			}
-
-			if(letraMov.equals("d")) {
-				realizarMovimiento(vectorcito[0],vectorcito[1]+1,false);
-			}
-
-			if(letraMov.equals("i")) {
-				realizarMovimiento(vectorcito[0],vectorcito[1]-1,false);
-			}
-
-		}
 
 		//No los voy a implementar pero los dejo para que no me salte el error
 		@Override

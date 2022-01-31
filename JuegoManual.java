@@ -68,7 +68,7 @@ public class JuegoManual {
 			}
 
 		}else if(columna==vector[1]) {
-			
+
 			if(fila-1==vector[0]) {
 				prueba=adolfito.realizaMovimiento(matriz,"b",false);
 
@@ -112,9 +112,9 @@ public class JuegoManual {
 
 				}
 			}
-			
+
 		}
-		
+
 		return null;
 	}
 
@@ -132,7 +132,40 @@ public class JuegoManual {
 		return this.adolfito.getResult();
 	}
 
-	public String[][] arrastrar(String[][] matriz, int Filas, int Columnas) {
+	public String[][] arrastrar( int Filas, int Columnas) {
+		int[] vectorcito = buscaRobot(matriz);
+
+		if(Filas==vectorcito[0]) {
+			if(Columnas-1 == vectorcito[1]) {
+				String [][] matrizAux = adolfito.clonarHabitacion(matriz);
+				adolfito.setMatriz(matrizAux);
+				this.movimiento = "D";
+				this.matriz=matrizAux;
+				return adolfito.arratraCajasContiguas(matriz,"","d");
+
+			}else if(Columnas+1==vectorcito[1]) {
+				String[][] matrizAux = adolfito.clonarHabitacion(matriz);
+				adolfito.setMatriz(matrizAux);
+				this.movimiento = "I";
+				this.matriz=matrizAux;
+				return adolfito.arratraCajasContiguas(matriz,"","i");
+			}
+		}else if(Columnas==vectorcito[1]) {
+			if(Filas+1 == vectorcito[0]){
+				String[][]matrizAux = adolfito.clonarHabitacion(matriz);
+				adolfito.setMatriz(matrizAux);
+				this.movimiento = "A";
+				this.matriz=matrizAux;
+				return adolfito.arratraCajasContiguas(matriz,"","a");
+
+			}else if(Filas+1 == vectorcito[0]) {
+				String[][] matrizAux = adolfito.clonarHabitacion(matriz);
+				adolfito.setMatriz(matrizAux);
+				this.movimiento = "B";
+				this.matriz=matrizAux;
+				return adolfito.arratraCajasContiguas(matriz,"","b");
+			}
+		}
 		return null;
 	}
 

@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
+
 @SuppressWarnings("serial")
 public class BotonJuega extends JButton implements ActionListener{
 
@@ -34,7 +35,7 @@ public class BotonJuega extends JButton implements ActionListener{
 		pantalla.actualizaHabitacionesHechas();
 
 		//llamamos a un metodo que compruebe si podemos movernos
-		if(pantalla.realizarMovimiento(fila,columna)) {
+		if(pantalla.realizarMovimiento(fila,columna,true)) {
 		}else {
 
 			pantalla.eliminaUltimaHabitacion();

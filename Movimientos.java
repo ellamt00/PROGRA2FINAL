@@ -546,7 +546,7 @@ public class Movimientos {
 
 	}
 
-	private String[][] arratraCajasContiguas(String[][] nueva, String caminoAuxiliar, String movimiento) {
+	public String[][] arratraCajasContiguas(String[][] nueva, String caminoAuxiliar, String movimiento) {
 
 		int[] posiciones = buscaRobot(nueva);
 
@@ -971,7 +971,7 @@ public class Movimientos {
 		return "Camino: "+solucion+"\t Movimientos realizados: "+ numerador;
 	}
 
-	private String[][] clonarHabitacion(String[][] matriz) {
+	public String[][] clonarHabitacion(String[][] matriz) {
 		String[][] clonado = new String[matriz.length][matriz[0].length];
 
 		for (int i = 0; i < matriz.length; i++) {
