@@ -32,13 +32,13 @@ public class BotonJuega extends JButton implements ActionListener{
 
 	public void actionPerformed(ActionEvent arg0) {
 
-		pantalla.actualizaHabitacionesHechas();
+		//pantalla.actualizaHabitacionesHechas();
 
 		//llamamos a un metodo que compruebe si podemos movernos
 		if(pantalla.realizarMovimiento(fila,columna,true)) {
 		}else {
 
-			pantalla.eliminaUltimaHabitacion();
+			//pantalla.eliminaUltimaHabitacion();
 			JOptionPane.showInputDialog(null,"Movimiento no valido");
 		}
 

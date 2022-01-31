@@ -68,6 +68,7 @@ public class Pantalla extends JFrame implements ActionListener {
 	private int posicionAccion;
 	private boolean estoyJugando;
 	public boolean actualizado =true;
+	private boolean ultimoPanel = false;
 
 	@SuppressWarnings("static-access")
 	public Pantalla() {
@@ -256,11 +257,17 @@ public class Pantalla extends JFrame implements ActionListener {
 	}
 
 	private void reHacer() {
-		if (posicionAccion == habitacionHecha.size()) {
+		if(posicionAccion == habitacionHecha.size()-1) {
+			ultimoPanel = true;
+		}else {
+			ultimoPanel = false;
+		}
+		if (ultimoPanel) {
 			JOptionPane.showMessageDialog(null, "No se puede rehacer la accion");
 		} else {
 			posicionAccion++;
 			matriz = habitacionHecha.get(posicionAccion);
+			
 			if (estoyJugando) {
 				camino = caminos.get(posicionAccion);
 				cargaPanelJuego();
@@ -487,6 +494,7 @@ public class Pantalla extends JFrame implements ActionListener {
 			// No se ha realizado el movimiento
 			return false;
 		} else {
+			actualizaHabitacionesHechas();
 			matriz = prueba;
 			this.cargaPanelJuego();
 			camino += movimiento.getMovimiento();
@@ -921,19 +929,35 @@ public class Pantalla extends JFrame implements ActionListener {
 		int[] vectorcito = juguete.buscaRobot(matriz);
 
 		if(letraMov.equals("a")) {
+			if(matriz[vectorcito[0]-1][vectorcito[1]].equals("-") || matriz[vectorcito[0]-1][vectorcito[1]].equals("-") ) {
 			realizarMovimiento(vectorcito[0]-1,vectorcito[1],false);
+			}else {
+				JOptionPane.showMessageDialog(null, "No se puede arrastrar y empujar a la vez");
+			}
 		}
 
 		if(letraMov.equals("b")) {
-			realizarMovimiento(vectorcito[0]+1,vectorcito[1],false);
+			if(matriz[vectorcito[0]+1][vectorcito[1]].equals("-") || matriz[vectorcito[0]+1][vectorcito[1]].equals("-") ) {
+				realizarMovimiento(vectorcito[0]+1,vectorcito[1],false);
+				}else {
+					JOptionPane.showMessageDialog(null, "No se puede arrastrar y empujar a la vez");
+				}
 		}
 
 		if(letraMov.equals("d")) {
-			realizarMovimiento(vectorcito[0],vectorcito[1]+1,false);
+			if(matriz[vectorcito[0]][vectorcito[1]+1].equals("-") || matriz[vectorcito[0]][vectorcito[1]+1].equals("-") ) {
+				realizarMovimiento(vectorcito[0],vectorcito[1]+1,false);
+				}else {
+					JOptionPane.showMessageDialog(null, "No se puede arrastrar y empujar a la vez");
+				}			
 		}
 
 		if(letraMov.equals("i")) {
-			realizarMovimiento(vectorcito[0],vectorcito[1]-1,false);
+			if(matriz[vectorcito[0]][vectorcito[1]-1].equals("-") || matriz[vectorcito[0]][vectorcito[1]-1].equals("-") ) {
+				realizarMovimiento(vectorcito[0],vectorcito[1]-1,false);
+				}else {
+					JOptionPane.showMessageDialog(null, "No se puede arrastrar y empujar a la vez");
+				}
 		}
 
 	}
@@ -965,6 +989,7 @@ public class Pantalla extends JFrame implements ActionListener {
 				}
 
 				if(e.getKeyCode()==KeyEvent.VK_DOWN) {
+					System.out.println("Arrastrar b");
 					arrastrar("b");
 				}
 

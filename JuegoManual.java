@@ -158,7 +158,7 @@ public class JuegoManual {
 				this.matriz=matrizAux;
 				return adolfito.arratraCajasContiguas(matriz,"","a");
 
-			}else if(Filas+1 == vectorcito[0]) {
+			}else if(Filas-1 == vectorcito[0]) {
 				String[][] matrizAux = adolfito.clonarHabitacion(matriz);
 				adolfito.setMatriz(matrizAux);
 				this.movimiento = "B";
