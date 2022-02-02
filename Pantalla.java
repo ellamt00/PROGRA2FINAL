@@ -1036,4 +1036,17 @@ public class Pantalla extends JFrame implements ActionListener {
 
 		}
 	}
+
+	// Panel para el boton
+		panelBoton = new JPanel();
+		//Creo el boton
+		botonAdolfo = new JButton("Boton Adolfo");
+		//Add escucha al boton para cuando se haga click
+		botonAdolfo.addActionListener(this);
+		//Add boton al panel 
+		panelBoton.add(botonAdolfo);
+		//Para no tener que pulsar en el panel para poder seguir jugando
+		botonAdolfo.addKeyListener(new AdolfitoListener());
+		//Add panel a la interfaz
+		this.getContentPane().add(panelBoton, BorderLayout.SOUTH);
 }
